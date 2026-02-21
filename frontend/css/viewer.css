@@ -1,0 +1,21 @@
+/* Viewer container styles */
+
+#viewer-container.has-content {
+  background: white;
+}
+
+#viewer-container.has-content #empty-state {
+  display: none;
+}
+
+#viewer {
+  width: 100%;
+  height: 100%;
+}
+
+#fs-viewer-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}

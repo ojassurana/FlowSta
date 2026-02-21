@@ -1,0 +1,78 @@
+#mic-btn {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+#mic-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#mic-btn:focus-visible {
+  outline: 2px solid var(--fs-accent-light);
+  outline-offset: 3px;
+}
+
+/* Idle state */
+#mic-btn.mic-idle {
+  background: var(--fs-surface);
+  color: var(--fs-text-muted);
+}
+
+#mic-btn.mic-idle:not(:disabled):hover {
+  background: var(--fs-surface-hover);
+  color: var(--fs-text);
+}
+
+/* Listening state */
+#mic-btn.mic-listening {
+  background: var(--fs-error);
+  color: white;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 4px 32px rgba(239, 68, 68, 0.6);
+    transform: translateY(-50%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mic-btn.mic-listening {
+    animation: none;
+  }
+}
+
+/* Processing state */
+#mic-btn.mic-processing {
+  background: var(--fs-surface);
+  color: var(--fs-accent);
+  cursor: wait;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--fs-border);
+  border-top-color: var(--fs-accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowState</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/mic-button.css">
+  <link rel="stylesheet" href="/css/viewer.css">
+  <link rel="stylesheet" href="/css/toast.css">
+</head>
+<body>
+  <!-- URL Input Bar -->
+  <header id="url-bar">
+    <div class="url-bar-inner">
+      <div class="logo">FlowState</div>
+      <form id="url-form">
+        <input type="text" id="url-input" placeholder="Enter a webpage URL..." autocomplete="url" spellcheck="false">
+        <button type="submit" id="url-submit">Load</button>
+      </form>
+    </div>
+    <div id="loading-indicator" hidden>
+      <div class="spinner"></div>
+      <span>Loading page...</span>
+    </div>
+  </header>
+
+  <!-- Page Viewer -->
+  <main id="viewer-container">
+    <div id="viewer" role="document" aria-label="Loaded webpage content"></div>
+    <div id="empty-state">
+      <div class="empty-state-content">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        <h2>Enter a URL above to get started</h2>
+        <p>Then use the mic button to tell FlowState what to focus on.</p>
+        <p class="hint">Try: "Only show me the event schedule" or "Focus on the ingredients"</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Mic Button -->
+  <button id="mic-btn" class="mic-idle" aria-label="Activate voice command" title="Speak a focus instruction" disabled>
+    <!-- Mic Icon (idle) -->
+    <svg id="mic-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+      <line x1="12" y1="19" x2="12" y2="23"/>
+      <line x1="8" y1="23" x2="16" y2="23"/>
+    </svg>
+    <!-- Stop Icon (listening) -->
+    <svg id="mic-stop-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" hidden>
+      <rect x="6" y="6" width="12" height="12" rx="2"/>
+    </svg>
+    <!-- Spinner (processing) -->
+    <div id="mic-spinner" class="spinner-small" hidden></div>
+  </button>
+
+  <!-- Text Input Fallback -->
+  <div id="text-fallback" hidden>
+    <form id="text-form">
+      <input type="text" id="text-input" placeholder="Type a focus instruction...">
+      <button type="submit">Apply</button>
+      <button type="button" id="text-fallback-close" aria-label="Close text input">&times;</button>
+    </form>
+  </div>
+
+  <!-- Reset Button (shown when focus is active) -->
+  <button id="reset-btn" hidden aria-label="Clear focus and show everything" title="Show everything">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 6L6 18M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <!-- Toast Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ARIA Live Region -->
+  <div id="aria-announcer" aria-live="assertive" class="sr-only"></div>
+
+  <script src="/js/toast.js"></script>
+  <script src="/js/api-client.js"></script>
+  <script src="/js/focus-session.js"></script>
+  <script src="/js/url-loader.js"></script>
+  <script src="/js/mic-controller.js"></script>
+  <script src="/js/content-extractor.js"></script>
+  <script src="/js/transformer.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

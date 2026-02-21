@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(source venv/bin/activate && python -c \"from backend.main import app; print\\('Import OK'\\)\" 2>&1)",
+      "Bash(source:*)",
+      "Bash(pkill:*)",
+      "Bash(curl:*)",
+      "Bash(source venv/bin/activate && python -c \"import certifi\" 2>&1)",
+      "WebSearch",
+      "WebFetch(domain:platform.openai.com)",
+      "Bash(python:*)",
+      "Bash(sleep 1:*)",
+      "Bash(tail:*)"
+    ]
+  }
+}
