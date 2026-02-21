@@ -10,6 +10,11 @@
   var textFallback = document.getElementById("text-fallback");
   var textFallbackClose = document.getElementById("text-fallback-close");
   var resetBtn = document.getElementById("reset-btn");
+  var focusViewToggle = document.getElementById("focus-view-toggle");
+  var focusViewPanel = document.getElementById("focus-view-panel");
+  var focusViewClose = document.getElementById("focus-view-close");
+  var focusViewMeta = document.getElementById("focus-view-meta");
+  var focusViewContent = document.getElementById("focus-view-content");
   var processing = false;
 
   // --- URL Loading ---
@@ -19,6 +24,7 @@
     if (!url) return;
 
     try {
+      hideFocusView(true);
       await FS.urlLoader.loadPage(url);
       FS.toast.show("Page loaded. Use the mic to set your focus.", "info", 3000);
     } catch (err) {
@@ -73,14 +79,28 @@
       FS.transformer.resetAll(root);
       FS.session.reset();
       resetBtn.hidden = true;
+      hideFocusView(true);
       FS.toast.show("Focus cleared.", "info", 2000);
       announce("Focus cleared. All content is now visible.");
     }
   });
 
+  focusViewToggle.addEventListener("click", function () {
+    if (!focusViewPanel.hidden) {
+      hideFocusView(false);
+      return;
+    }
+    renderAndShowFocusView();
+  });
+
+  focusViewClose.addEventListener("click", function () {
+    hideFocusView(false);
+  });
+
   // --- Main Pipeline ---
   async function handleFocusCommand(audioBlob, directText) {
     processing = true;
+    hideFocusView(false);
 
     try {
       // Step 1: Transcribe
@@ -125,6 +145,7 @@
         if (root) FS.transformer.resetAll(root);
         FS.session.reset();
         resetBtn.hidden = true;
+        hideFocusView(true);
         FS.toast.show("Focus cleared — showing everything.", "info");
         announce("Focus cleared. All content is now visible.");
         processing = false;
@@ -208,6 +229,7 @@
 
       // Show reset button
       resetBtn.hidden = false;
+      focusViewToggle.hidden = false;
 
       // Summary announcement
       var highlighted = scores.filter(function (s) {
@@ -264,5 +286,69 @@
     return new Promise(function (resolve) {
       setTimeout(resolve, ms);
     });
+  }
+
+  function hideFocusView(hideButton) {
+    focusViewPanel.hidden = true;
+    focusViewToggle.classList.remove("active");
+    if (hideButton) {
+      focusViewToggle.hidden = true;
+    }
+  }
+
+  function renderAndShowFocusView() {
+    var blocks = FS.session.getExtractedBlocks() || [];
+    var scoredMap = FS.session.getScoredMap() || {};
+    var activeIntent = FS.session.getActiveIntent();
+    var topics = activeIntent
+      ? activeIntent.topics
+          .map(function (t) {
+            return t.label;
+          })
+          .join(", ")
+      : "current focus";
+
+    var selected = blocks.filter(function (b) {
+      var entry = scoredMap[b.id];
+      return entry && entry.score >= 0.7;
+    });
+
+    focusViewContent.innerHTML = "";
+
+    if (!selected.length) {
+      focusViewMeta.textContent = "No focused sections found for this filter.";
+      focusViewPanel.hidden = false;
+      focusViewToggle.classList.add("active");
+      return;
+    }
+
+    selected.forEach(function (block) {
+      var card = document.createElement("article");
+      card.className = "focus-view-card";
+
+      var header = document.createElement("div");
+      header.className = "focus-view-card-header";
+      header.textContent =
+        block.context && block.context.parent_heading
+          ? block.context.parent_heading
+          : block.element_type;
+
+      var body = document.createElement("div");
+      body.className = "focus-view-card-body";
+      body.textContent = block.text_content || "[Non-text content]";
+
+      card.appendChild(header);
+      card.appendChild(body);
+      focusViewContent.appendChild(card);
+    });
+
+    focusViewMeta.textContent =
+      "Showing " +
+      selected.length +
+      " focused blocks for: " +
+      topics +
+      ".";
+    focusViewPanel.hidden = false;
+    focusViewToggle.classList.add("active");
   }
 })();
