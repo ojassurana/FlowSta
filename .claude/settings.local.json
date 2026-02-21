@@ -11,7 +11,9 @@
       "WebFetch(domain:platform.openai.com)",
       "Bash(python:*)",
       "Bash(sleep 1:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(pip install:*)",
+      "Bash(uvicorn:*)"
     ]
   }
 }

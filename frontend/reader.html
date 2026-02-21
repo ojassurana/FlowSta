@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowState Reader</title>
+  <link rel="stylesheet" href="/css/reader.css">
+</head>
+<body>
+  <div id="rsvp-container">
+    <!-- Large word display -->
+    <div id="rsvp-focus-area">
+      <div id="rsvp-orp-guide"></div>
+      <div id="rsvp-word"></div>
+    </div>
+
+    <!-- Paragraph view -->
+    <div id="rsvp-paragraph-wrapper">
+      <div id="rsvp-paragraph"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div id="rsvp-progress">
+      <div id="rsvp-progress-fill"></div>
+    </div>
+
+    <!-- Controls -->
+    <div id="rsvp-controls">
+      <button id="rsvp-exit" class="rsvp-btn" title="Exit reader (Esc)">Exit</button>
+      <button id="rsvp-back" class="rsvp-btn" title="Previous word (Left arrow)">Back</button>
+      <button id="rsvp-play" class="rsvp-btn rsvp-play-btn" title="Play/Pause (Space)">Play</button>
+      <button id="rsvp-forward" class="rsvp-btn" title="Next word (Right arrow)">Next</button>
+      <div class="rsvp-speed-control">
+        <input type="range" id="rsvp-speed" min="100" max="800" step="25" value="300">
+        <span id="rsvp-speed-label">300 WPM</span>
+      </div>
+    </div>
+
+    <div id="rsvp-shortcuts-hint">
+      Space: play/pause &middot; Arrows: navigate &middot; Up/Down: speed &middot; Esc: exit
+    </div>
+  </div>
+
+  <script src="/js/rsvp-reader.js"></script>
+</body>
+</html>

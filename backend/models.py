@@ -80,6 +80,17 @@ class ScoreResponse(BaseModel):
     scores: list[ScoreResult]
 
 
+# --- EEG Metrics ---
+
+class EEGMetrics(BaseModel):
+    focus_index: float
+    alpha_power: float
+    beta_power: float
+    theta_power: float
+    timestamp: float
+    signal_quality: Literal["good", "poor", "no_signal"]
+
+
 # --- Error ---
 
 class ErrorResponse(BaseModel):
