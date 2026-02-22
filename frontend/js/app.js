@@ -15,9 +15,6 @@
   var focusViewClose = document.getElementById("focus-view-close");
   var focusViewMeta = document.getElementById("focus-view-meta");
   var focusViewContent = document.getElementById("focus-view-content");
-  var bionicToggle = document.getElementById("bionic-toggle");
-  var eegToggle = document.getElementById("eeg-toggle");
-  var readerToggle = document.getElementById("reader-toggle");
   var processing = false;
 
   // --- URL Loading ---
@@ -98,57 +95,6 @@
 
   focusViewClose.addEventListener("click", function () {
     hideFocusView(false);
-  });
-
-  // --- Bionic Reading Toggle ---
-  bionicToggle.addEventListener("click", function () {
-    var root = getViewerRoot();
-    if (!root) {
-      FS.toast.show("Load a page first to use bionic reading.", "warning", 3000);
-      return;
-    }
-    if (FS.bionic.isEnabled()) {
-      FS.bionic.disable(root);
-      bionicToggle.classList.remove("active");
-      FS.toast.show("Bionic reading off.", "info", 2000);
-    } else {
-      FS.bionic.enable(root);
-      bionicToggle.classList.add("active");
-      FS.toast.show("Bionic reading on.", "info", 2000);
-    }
-  });
-
-  // --- EEG Toggle ---
-  eegToggle.addEventListener("click", function () {
-    if (FS.eeg.isConnected()) {
-      FS.eeg.disconnect();
-      eegToggle.classList.remove("active");
-      FS.toast.show("EEG disconnected.", "info", 2000);
-    } else {
-      FS.eeg.connect();
-      eegToggle.classList.add("active");
-      FS.toast.show("Connecting to EEG...", "info", 2000);
-    }
-  });
-
-  // EEG status callback
-  FS.eeg.onStatusChange = function (status) {
-    if (status === "connected") {
-      eegToggle.classList.add("active");
-      FS.toast.show("EEG connected.", "info", 2000);
-    } else {
-      eegToggle.classList.remove("active");
-    }
-  };
-
-  // Pipe EEG metrics to locked-in controller
-  FS.eeg.onMetrics = function (metrics) {
-    FS.lockedIn.handleMetrics(metrics);
-  };
-
-  // --- Reader Toggle (manual) ---
-  readerToggle.addEventListener("click", function () {
-    FS.lockedIn.openReader();
   });
 
   // --- Main Pipeline ---

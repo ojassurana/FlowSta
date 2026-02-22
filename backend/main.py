@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-from backend.routers import page, transcribe, interpret, score, eeg
+from backend.routers import page, transcribe, interpret, score
 
 app = FastAPI(title="FlowState API")
 
@@ -20,7 +20,6 @@ app.include_router(page.router, prefix="/api")
 app.include_router(transcribe.router, prefix="/api")
 app.include_router(interpret.router, prefix="/api")
 app.include_router(score.router, prefix="/api")
-app.include_router(eeg.router)
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
